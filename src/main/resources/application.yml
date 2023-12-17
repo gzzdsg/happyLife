@@ -1,0 +1,5 @@
+#spring:
+#  datasource:
+#    name: myDatasource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://123.57.227.142:3306/happyLife
