@@ -35,13 +35,13 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>32.0.0-android</version>
+			<version>33.0.0-jre</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.22</version> <!-- 请替换为最新版本 -->
+			<version>1.18.30</version> <!-- 请替换为最新版本 -->
 			<scope>provided</scope>
 		</dependency>
 
