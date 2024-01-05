@@ -12,11 +12,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
 public class WxController {
 
+    /**
+     * 修改微信公众号配置后的验证开发者服务器
+     *
+     * @param signature 参数签名
+     * @param timestamp 时间戳
+     * @param nonce     随机字符串
+     * @param echostr   返回值
+     * @return 返回值
+     */
     @GetMapping("/wx")
     public String hello(@RequestParam(value = "signature") String signature,
                         @RequestParam(value = "timestamp") String timestamp,
@@ -26,10 +36,9 @@ public class WxController {
         List<String> params = Lists.newArrayList(Constants.APP_TOKEN, timestamp, nonce);
         List<String> sortedParams = params.stream().sorted().toList();
         String encodingStr = EncodeUtils.encodeSha1(Joiner.on("").join(sortedParams));
-        System.out.println(JSON.toJSONString(params));
-        System.out.println(signature);
-        System.out.println(encodingStr);
-        System.out.println(echostr);
-        return echostr;
+        if (Objects.equals(encodingStr, signature)) {
+            return echostr;
+        }
+        return "error";
     }
 }
