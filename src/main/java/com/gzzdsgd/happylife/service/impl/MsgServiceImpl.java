@@ -1,6 +1,5 @@
 package com.gzzdsgd.happylife.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.common.base.Throwables;
 import com.gzzdsgd.happylife.constant.EventTypeEnum;
@@ -42,7 +41,7 @@ public class MsgServiceImpl implements MsgService {
                     if (Objects.equals(recTextMsg.getContent(), "中午吃啥")) {
                         returnTextMsg.setContent("尖椒肉丝盖饭!");
                     }
-                    return XmlUtils.convertXml(JSONObject.parseObject(JSON.toJSONString(returnTextMsg), JSONObject.class));
+                    return XmlUtils.convertXml(returnTextMsg);
                 }
                 case EVENT -> {
                     RecEventMsg recEventMsg = jsonObject.toJavaObject(RecEventMsg.class);
@@ -50,7 +49,7 @@ public class MsgServiceImpl implements MsgService {
                     switch (eventTypeEnum) {
                         case SUBSCRIBE -> {
                             RecTextMsg msg = RecTextMsg.getInstance(recEventMsg.getFromUserName(), recEventMsg.getToUserName(), "Hi，你来啦～");
-                            return XmlUtils.convertXml(JSONObject.parseObject(JSON.toJSONString(msg), JSONObject.class));
+                            return XmlUtils.convertXml(msg);
                         }
                         case UNSUBSCRIBE -> {
                             // todo 取消关注相关操作

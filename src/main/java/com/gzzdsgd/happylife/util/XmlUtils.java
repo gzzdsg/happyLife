@@ -1,5 +1,6 @@
 package com.gzzdsgd.happylife.util;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -41,11 +42,12 @@ public class XmlUtils {
     /**
      * 将json对象转为XML
      *
-     * @param msgData 消息信息
+     * @param msg 消息信息
      * @return xml字符串
      * @throws IOException
      */
-    public static String convertXml(JSONObject msgData) throws IOException {
+    public static String convertXml(Object msg) throws IOException {
+        JSONObject msgData = JSONObject.parseObject(JSON.toJSONString(msg), JSONObject.class);
         Document document = DocumentHelper.createDocument();
         Element rootElement = document.addElement("xml");
         for (Map.Entry<String, Object> entry : msgData.entrySet()) {

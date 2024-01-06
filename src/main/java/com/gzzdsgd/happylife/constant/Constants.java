@@ -5,6 +5,9 @@ package com.gzzdsgd.happylife.constant;
  */
 public class Constants {
 
+    /** 公众号OPENID */
+    public static final String APP_USER_NAME = "gh_d67f72981591";
+
     /** 微信公众号appId */
     public static final String APP_ID = "wxbad370852959a5c1";
 

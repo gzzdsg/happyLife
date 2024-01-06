@@ -50,7 +50,7 @@ class WechatBackendApplicationTests {
 			System.out.println(JSON.toJSONString(recTextMsg));
 
 			// 转换
-			String xml = XmlUtils.convertXml(JSONObject.parseObject(JSON.toJSONString(recTextMsg), JSONObject.class));
+			String xml = XmlUtils.convertXml(recTextMsg);
 			System.out.println(xml);
 
 		} catch (DocumentException e) {
