@@ -64,6 +64,8 @@ public class WxController {
     @PostMapping(value = "/wx")
     public String eventHandler(@RequestBody String message) {
 
+        log.info("eventHandler -> message : {}", message);
+
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(RecTextMsg.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
