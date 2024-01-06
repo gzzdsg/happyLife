@@ -1,5 +1,6 @@
 package com.gzzdsgd.happylife.constant;
 
+import com.gzzdsgd.happylife.exception.CustomException;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -30,6 +31,6 @@ public enum EventTypeEnum {
                 return eventTypeEnum;
             }
         }
-        throw new IllegalArgumentException("非法的事件类型");
+        throw new CustomException("非法的事件类型");
     }
 }

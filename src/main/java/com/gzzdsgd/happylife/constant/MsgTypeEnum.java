@@ -1,5 +1,6 @@
 package com.gzzdsgd.happylife.constant;
 
+import com.gzzdsgd.happylife.exception.CustomException;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -29,6 +30,6 @@ public enum MsgTypeEnum {
                 return msgTypeEnum;
             }
         }
-        throw new IllegalArgumentException("非法的消息类型");
+        throw new CustomException("非法的消息类型");
     }
 }
