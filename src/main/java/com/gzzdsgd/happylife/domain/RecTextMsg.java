@@ -1,6 +1,5 @@
 package com.gzzdsgd.happylife.domain;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 
