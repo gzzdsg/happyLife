@@ -5,15 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.gzzdsgd.happylife.constant.Constants;
-import com.gzzdsgd.happylife.domain.RecTextMsg;
+import com.gzzdsgd.happylife.service.MsgService;
 import com.gzzdsgd.happylife.util.EncodeUtils;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +22,9 @@ import java.util.Objects;
 @Slf4j
 @RestController
 public class WxController {
+
+    @Resource
+    private MsgService msgService;
 
     /**
      * 修改微信公众号配置后的验证开发者服务器
@@ -63,26 +63,8 @@ public class WxController {
      */
     @PostMapping(value = "/wx")
     public String eventHandler(@RequestBody String message) {
-
         log.info("eventHandler -> message : {}", message);
-
-        try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(RecTextMsg.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-            StringReader reader = new StringReader(message);
-            RecTextMsg recTextMsg = (RecTextMsg) unmarshaller.unmarshal(reader);
-
-            System.out.println("recTextMsg: " + JSON.toJSONString(recTextMsg));
-
-            log.info("eventHandler -> recTextMsg : {}", JSON.toJSONString(recTextMsg));
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-
-        return "success";
+        return msgService.receiveMsg(message);
     }
-
 
 }
