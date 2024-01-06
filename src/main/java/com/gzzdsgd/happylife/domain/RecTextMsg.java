@@ -1,10 +1,11 @@
 package com.gzzdsgd.happylife.domain;
 
 import com.alibaba.fastjson2.annotation.JSONField;
+import com.gzzdsgd.happylife.constant.MsgTypeEnum;
 import lombok.Data;
 
 /**
- * 微信文本消息消息
+ * 微信文本消息
  *
  * @author: damei
  */
@@ -58,5 +59,23 @@ public class RecTextMsg {
      */
     @JSONField(name = "Idx")
     private Integer idx;
+
+    /**
+     * 静态工厂方法
+     *
+     * @param toUserName   接收方
+     * @param fromUserName 发送方
+     * @param content      文本消息内容
+     * @return 微信文本消息对象
+     */
+    public static RecTextMsg getInstance(String toUserName, String fromUserName, String content) {
+        RecTextMsg recTextMsg = new RecTextMsg();
+        recTextMsg.setToUserName(toUserName);
+        recTextMsg.setFromUserName(fromUserName);
+        recTextMsg.setCreateTime(System.currentTimeMillis() / 1000L);
+        recTextMsg.setMsgType(MsgTypeEnum.TEXT.getValue());
+        recTextMsg.setContent(content);
+        return recTextMsg;
+    }
 
 }

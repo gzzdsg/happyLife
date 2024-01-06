@@ -34,7 +34,6 @@ class WechatBackendApplicationTests {
 				"<MsgId>24403372291987643</MsgId>\n" +
 				"</xml>";
 
-
 		try {
 			// 解析
 			Document document = DocumentHelper.parseText(message);
