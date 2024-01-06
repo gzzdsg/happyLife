@@ -8,12 +8,13 @@ import com.gzzdsg.happylife.domain.RecEventMsg;
 import com.gzzdsg.happylife.domain.RecTextMsg;
 import com.gzzdsg.happylife.domain.po.Food;
 import com.gzzdsg.happylife.mapper.FoodMapper;
+import com.gzzdsg.happylife.service.KeyService;
 import com.gzzdsg.happylife.service.MsgService;
-import com.gzzdsg.happylife.util.RandomUtils;
 import com.gzzdsg.happylife.util.XmlUtils;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -33,6 +34,12 @@ public class MsgServiceImpl implements MsgService {
 
     @Resource
     private FoodMapper foodMapper;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Resource
+    private KeyService keyService;
 
 
     @Override
@@ -85,11 +92,18 @@ public class MsgServiceImpl implements MsgService {
      */
     private String textMsgHandler(String msg) {
         if (Objects.equals(msg, "中午吃啥")) {
-            List<Food> allFoods = foodMapper.getAllFoods();
-            if (CollectionUtils.isEmpty(allFoods)) {
-                return "不知道哇。";
+            String key = keyService.cacheAllFoodNameKey();
+            Boolean exists = redisTemplate.hasKey(key);
+            if (exists == null || !exists) {
+                List<Food> allFoods = foodMapper.getAllFoods();
+                if (CollectionUtils.isEmpty(allFoods)) {
+                    return "不知道哇。";
+                }
+                for (Food food : allFoods) {
+                    redisTemplate.opsForSet().add(key, food.getName());
+                }
             }
-            return allFoods.get(RandomUtils.randomInt(allFoods.size())).getName();
+            return redisTemplate.opsForSet().randomMember(key) + "！";
         }
         return msg;
     }

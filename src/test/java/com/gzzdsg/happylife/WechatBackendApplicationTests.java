@@ -15,10 +15,12 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 class WechatBackendApplicationTests {
@@ -26,9 +28,22 @@ class WechatBackendApplicationTests {
 	@Resource
 	private FoodService foodService;
 
+	@Resource
+	private RedisTemplate<String, Object> redisTemplate;
+
+
 	@Test
 	void contextLoads() {
 		System.out.println(new Date(1704555627000L));
+	}
+
+	@Test
+	void testRedis() {
+		String redisKey = "testkey";
+
+		redisTemplate.opsForValue().set(redisKey, "1", 10, TimeUnit.SECONDS);
+
+		System.out.println(redisTemplate.opsForValue().get(redisKey));
 	}
 
 	@Test
