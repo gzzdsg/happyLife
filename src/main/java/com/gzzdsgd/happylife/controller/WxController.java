@@ -5,12 +5,15 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.gzzdsgd.happylife.constant.Constants;
+import com.gzzdsgd.happylife.domain.RecTextMsg;
 import com.gzzdsgd.happylife.util.EncodeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,4 +54,33 @@ public class WxController {
                 JSON.toJSONString(params), encodingStr, signature, echostr);
         return "error";
     }
+
+    /**
+     * 接收微信推送的消息
+     *
+     * @param message xml消息体
+     * @return 返回的内容
+     */
+    @PostMapping(value = "/wx")
+    public String eventHandler(@RequestBody String message) throws JAXBException {
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RecTextMsg.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+            StringReader reader = new StringReader(message);
+            RecTextMsg recTextMsg = (RecTextMsg) unmarshaller.unmarshal(reader);
+
+            System.out.println("recTextMsg: " + JSON.toJSONString(recTextMsg));
+
+            log.info("eventHandler -> recTextMsg : {}", JSON.toJSONString(recTextMsg));
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+        return "success";
+    }
+
+
 }
