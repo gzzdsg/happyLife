@@ -10,9 +10,10 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
 
-
-#spring:
-#  datasource:
-#    name: myDatasource
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://123.57.227.142:3306/happyLife
+# spring 数据源
+spring:
+  datasource:
+    url: jdbc:mysql://123.57.227.142:3306/happyLife
+    username: root
+    password: GZZO0OO0O0.o0
+    driver-class-name: com.mysql.cj.jdbc.Driver
