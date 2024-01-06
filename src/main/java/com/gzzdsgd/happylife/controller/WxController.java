@@ -62,7 +62,7 @@ public class WxController {
      * @return 返回的内容
      */
     @PostMapping(value = "/wx")
-    public String eventHandler(@RequestBody String message) throws JAXBException {
+    public String eventHandler(@RequestBody String message) {
 
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(RecTextMsg.class);
