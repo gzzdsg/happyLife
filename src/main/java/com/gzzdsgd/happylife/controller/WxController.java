@@ -1,6 +1,7 @@
 package com.gzzdsgd.happylife.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.gzzdsgd.happylife.constant.Constants;
@@ -46,7 +47,8 @@ public class WxController {
         if (Objects.equals(encodingStr, signature)) {
             return echostr;
         }
-        log.error("WxController wx -> ");
+        log.error("WxController wx -> params : {}, signature : {}, echostr : {}",
+                JSON.toJSONString(params), signature, echostr);
         return "error";
     }
 }
