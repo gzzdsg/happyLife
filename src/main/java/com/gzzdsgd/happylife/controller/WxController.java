@@ -47,8 +47,8 @@ public class WxController {
         if (Objects.equals(encodingStr, signature)) {
             return echostr;
         }
-        log.error("WxController wx -> params : {}, signature : {}, echostr : {}",
-                JSON.toJSONString(params), signature, echostr);
+        log.error("WxController wx -> params : {}, encodingStr : {},  signature : {}, echostr : {}",
+                JSON.toJSONString(params), encodingStr, signature, echostr);
         return "error";
     }
 }
