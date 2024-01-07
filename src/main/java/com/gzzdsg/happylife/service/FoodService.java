@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface FoodService {
 
-    public List<Food> findAllFood();
+    List<Food> findAllFood(String openId);
 
 }

@@ -5,6 +5,7 @@ import com.gzzdsg.happylife.mapper.FoodMapper;
 import com.gzzdsg.happylife.service.FoodService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -20,7 +21,12 @@ public class FoodServiceImpl implements FoodService {
     private FoodMapper foodMapper;
 
     @Override
-    public List<Food> findAllFood() {
-        return foodMapper.getAllFoods();
+    public List<Food> findAllFood(String openId) {
+        List<Food> openIdFoods = foodMapper.getAllFoodsByOpenId(openId);
+        if (!CollectionUtils.isEmpty(openIdFoods)) {
+            return openIdFoods;
+        }
+        openIdFoods = foodMapper.getAllFoods();
+        return openIdFoods;
     }
 }

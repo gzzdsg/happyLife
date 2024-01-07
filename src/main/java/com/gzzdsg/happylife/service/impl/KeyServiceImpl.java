@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class KeyServiceImpl implements KeyService {
 
     @Override
-    public String cacheAllFoodNameKey() {
-        return String.format("%s:all:food:name", "set");
+    public String cacheAllFoodNameKey(String openId) {
+        return String.format("%s:all:food:name:%s", "set", openId);
     }
 }

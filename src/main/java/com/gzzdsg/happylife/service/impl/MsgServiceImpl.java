@@ -5,11 +5,11 @@ import com.alibaba.fastjson2.JSONObject;
 import com.google.common.base.Throwables;
 import com.gzzdsg.happylife.constant.EventTypeEnum;
 import com.gzzdsg.happylife.constant.MsgTypeEnum;
+import com.gzzdsg.happylife.domain.po.Food;
 import com.gzzdsg.happylife.domain.vo.RecEventMsg;
 import com.gzzdsg.happylife.domain.vo.RecLocationMsg;
 import com.gzzdsg.happylife.domain.vo.RecTextMsg;
-import com.gzzdsg.happylife.domain.po.Food;
-import com.gzzdsg.happylife.mapper.FoodMapper;
+import com.gzzdsg.happylife.service.FoodService;
 import com.gzzdsg.happylife.service.KeyService;
 import com.gzzdsg.happylife.service.MsgService;
 import com.gzzdsg.happylife.util.XmlUtils;
@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.gzzdsg.happylife.constant.Constants.REPLY_BY_SUBSCRIBE;
 
@@ -35,7 +36,7 @@ import static com.gzzdsg.happylife.constant.Constants.REPLY_BY_SUBSCRIBE;
 public class MsgServiceImpl implements MsgService {
 
     @Resource
-    private FoodMapper foodMapper;
+    private FoodService foodService;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -61,7 +62,7 @@ public class MsgServiceImpl implements MsgService {
                     replyTextMsg.setToUserName(recTextMsg.getFromUserName());
                     replyTextMsg.setCreateTime(System.currentTimeMillis() / 1000L);
                     // 根据文本内容做出不同的处理
-                    String reply = this.textMsgHandler(recTextMsg.getContent());
+                    String reply = this.textMsgHandler(recTextMsg);
                     replyTextMsg.setContent(reply);
                     return XmlUtils.convertXml(replyTextMsg);
                 }
@@ -101,25 +102,27 @@ public class MsgServiceImpl implements MsgService {
     /**
      * 文本消息处理方法
      *
-     * @param msg 消息内容
+     * @param recTextMsg 收到的文本消息消息
      * @return 回复内容
      */
-    private String textMsgHandler(String msg) {
-        if (Objects.equals(msg, "中午吃啥")) {
-            String key = keyService.cacheAllFoodNameKey();
+    private String textMsgHandler(RecTextMsg recTextMsg) {
+        if (Objects.equals(recTextMsg.getContent(), "中午吃啥")) {
+            String openId = recTextMsg.getFromUserName();
+            String key = keyService.cacheAllFoodNameKey(openId);
             Boolean exists = redisTemplate.hasKey(key);
             if (exists == null || !exists) {
-                List<Food> allFoods = foodMapper.getAllFoods();
+                List<Food> allFoods = foodService.findAllFood(openId);
                 if (CollectionUtils.isEmpty(allFoods)) {
                     return "不知道哇。";
                 }
                 for (Food food : allFoods) {
                     redisTemplate.opsForSet().add(key, food.getName());
                 }
+                redisTemplate.expire(key, 10, TimeUnit.MINUTES);
             }
             return redisTemplate.opsForSet().randomMember(key) + "！";
         }
-        return msg;
+        return recTextMsg.getContent();
     }
 
 

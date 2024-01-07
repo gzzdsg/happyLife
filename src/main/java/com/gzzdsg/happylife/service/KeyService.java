@@ -11,6 +11,6 @@ public interface KeyService {
      *
      * set:all:food:name
      */
-    String cacheAllFoodNameKey();
+    String cacheAllFoodNameKey(String openId);
 
 }

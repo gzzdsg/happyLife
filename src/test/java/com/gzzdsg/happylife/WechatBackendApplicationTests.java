@@ -48,7 +48,8 @@ class WechatBackendApplicationTests {
 
 	@Test
 	void testMybatis() {
-		List<Food> foods = foodService.findAllFood();
+		List<Food> foods = foodService.findAllFood("123123123");
+		System.out.println(JSON.toJSONString(foods));
 	}
 
 	@Test
