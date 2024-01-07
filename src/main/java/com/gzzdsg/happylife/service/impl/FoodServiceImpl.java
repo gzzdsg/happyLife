@@ -22,10 +22,12 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public List<Food> findAllFood(String openId) {
+        // 获取用户自己录入的食物
         List<Food> openIdFoods = foodMapper.getAllFoodsByOpenId(openId);
         if (!CollectionUtils.isEmpty(openIdFoods)) {
             return openIdFoods;
         }
+        // 全量获取
         openIdFoods = foodMapper.getAllFoods();
         return openIdFoods;
     }

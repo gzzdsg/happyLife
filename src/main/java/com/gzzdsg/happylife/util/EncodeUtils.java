@@ -3,8 +3,17 @@ package com.gzzdsg.happylife.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * 编码工具了
+ */
 public class EncodeUtils {
 
+    /**
+     * 将输入的字符串进行sha1编码
+     *
+     * @param input 输入字符串
+     * @return 编码后的内容
+     */
     public static String encodeSha1(String input) {
 
         try {

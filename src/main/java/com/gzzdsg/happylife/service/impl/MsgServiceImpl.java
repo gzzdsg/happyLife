@@ -106,11 +106,13 @@ public class MsgServiceImpl implements MsgService {
      * @return 回复内容
      */
     private String textMsgHandler(RecTextMsg recTextMsg) {
+        // 中午吃啥逻辑
         if (Objects.equals(recTextMsg.getContent(), "中午吃啥")) {
             String openId = recTextMsg.getFromUserName();
             String key = keyService.cacheAllFoodNameKey(openId);
             Boolean exists = redisTemplate.hasKey(key);
             if (exists == null || !exists) {
+                // 缓存不存在，加载缓存
                 List<Food> allFoods = foodService.findAllFood(openId);
                 if (CollectionUtils.isEmpty(allFoods)) {
                     return "不知道哇。";
@@ -118,10 +120,13 @@ public class MsgServiceImpl implements MsgService {
                 for (Food food : allFoods) {
                     redisTemplate.opsForSet().add(key, food.getName());
                 }
+                // 缓存10分钟国旗
                 redisTemplate.expire(key, 10, TimeUnit.MINUTES);
             }
+            // 池子中随机一个食物返回
             return redisTemplate.opsForSet().randomMember(key) + "！";
         }
+        // 回声逻辑
         return recTextMsg.getContent();
     }
 

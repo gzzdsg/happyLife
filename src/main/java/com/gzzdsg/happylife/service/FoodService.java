@@ -11,6 +11,12 @@ import java.util.List;
  */
 public interface FoodService {
 
+    /**
+     * 根据openid获取食物的随机池
+     *
+     * @param openId 用户唯一标识
+     * @return 食物随机池
+     */
     List<Food> findAllFood(String openId);
 
 }

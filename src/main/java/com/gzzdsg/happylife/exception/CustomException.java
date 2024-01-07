@@ -1,7 +1,7 @@
 package com.gzzdsg.happylife.exception;
 
 /**
- * 业务异常
+ * 自定义业务异常
  *
  * @author: damei
  */

@@ -9,7 +9,7 @@ public interface KeyService {
     /**
      * 缓存全部食物名称
      *
-     * set:all:food:name
+     * set:all:food:name:openId
      */
     String cacheAllFoodNameKey(String openId);
 
