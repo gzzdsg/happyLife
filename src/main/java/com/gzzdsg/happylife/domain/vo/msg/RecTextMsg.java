@@ -1,39 +1,22 @@
-package com.gzzdsg.happylife.domain.vo;
+package com.gzzdsg.happylife.domain.vo.msg;
 
 import com.alibaba.fastjson2.annotation.JSONField;
+import com.gzzdsg.happylife.constant.MsgTypeEnum;
 import lombok.Data;
 
 /**
- * 微信位置信息消息
+ * 微信文本消息
  *
  * @author: damei
  */
 @Data
-public class RecLocationMsg {
+public class RecTextMsg {
 
     /**
-     * 地理位置纬度
+     * 文本消息内容
      */
-    @JSONField(name = "Location_X")
-    private String locationX;
-
-    /**
-     * 地理位置经度
-     */
-    @JSONField(name = "Location_Y")
-    private String locationY;
-
-    /**
-     * 地图缩放大小
-     */
-    @JSONField(name = "Scale")
-    private Integer scale;
-
-    /**
-     * 地理位置信息
-     */
-    @JSONField(name = "Label")
-    private String label;
+    @JSONField(name = "Content")
+    private String content;
 
     /**
      * 开发者微信号
@@ -76,5 +59,23 @@ public class RecLocationMsg {
      */
     @JSONField(name = "Idx")
     private Integer idx;
+
+    /**
+     * 静态工厂方法
+     *
+     * @param toUserName   接收方
+     * @param fromUserName 发送方
+     * @param content      文本消息内容
+     * @return 微信文本消息对象
+     */
+    public static RecTextMsg getInstance(String toUserName, String fromUserName, String content) {
+        RecTextMsg recTextMsg = new RecTextMsg();
+        recTextMsg.setToUserName(toUserName);
+        recTextMsg.setFromUserName(fromUserName);
+        recTextMsg.setCreateTime(System.currentTimeMillis() / 1000L);
+        recTextMsg.setMsgType(MsgTypeEnum.TEXT.getValue());
+        recTextMsg.setContent(content);
+        return recTextMsg;
+    }
 
 }

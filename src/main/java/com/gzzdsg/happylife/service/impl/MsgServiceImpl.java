@@ -6,9 +6,9 @@ import com.google.common.base.Throwables;
 import com.gzzdsg.happylife.constant.EventTypeEnum;
 import com.gzzdsg.happylife.constant.MsgTypeEnum;
 import com.gzzdsg.happylife.domain.po.Food;
-import com.gzzdsg.happylife.domain.vo.RecEventMsg;
-import com.gzzdsg.happylife.domain.vo.RecLocationMsg;
-import com.gzzdsg.happylife.domain.vo.RecTextMsg;
+import com.gzzdsg.happylife.domain.vo.msg.RecEventMsg;
+import com.gzzdsg.happylife.domain.vo.msg.RecLocationMsg;
+import com.gzzdsg.happylife.domain.vo.msg.RecTextMsg;
 import com.gzzdsg.happylife.service.FoodService;
 import com.gzzdsg.happylife.service.KeyService;
 import com.gzzdsg.happylife.service.MsgService;
@@ -39,7 +39,7 @@ public class MsgServiceImpl implements MsgService {
     private FoodService foodService;
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Resource
     private KeyService keyService;
@@ -109,7 +109,7 @@ public class MsgServiceImpl implements MsgService {
         // 中午吃啥逻辑
         if (Objects.equals(recTextMsg.getContent(), "中午吃啥")) {
             String openId = recTextMsg.getFromUserName();
-            String key = keyService.cacheAllFoodNameKey(openId);
+            String key = keyService.allFoodNameKey(openId);
             Boolean exists = redisTemplate.hasKey(key);
             if (exists == null || !exists) {
                 // 缓存不存在，加载缓存

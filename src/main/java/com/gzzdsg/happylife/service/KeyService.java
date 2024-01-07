@@ -11,6 +11,13 @@ public interface KeyService {
      *
      * set:all:food:name:openId
      */
-    String cacheAllFoodNameKey(String openId);
+    String allFoodNameKey(String openId);
+
+    /**
+     * 缓存公众平台访问凭证
+     *
+     * value:access:token
+     */
+    String accessTokenKey();
 
 }

@@ -1,4 +1,4 @@
-package com.gzzdsg.happylife.domain.vo;
+package com.gzzdsg.happylife.domain.vo.msg;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;

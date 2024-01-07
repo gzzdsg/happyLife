@@ -3,18 +3,18 @@ package com.gzzdsg.happylife;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.gzzdsg.happylife.constant.EventTypeEnum;
-import com.gzzdsg.happylife.domain.vo.RecEventMsg;
 import com.gzzdsg.happylife.domain.po.Food;
+import com.gzzdsg.happylife.domain.vo.msg.RecEventMsg;
+import com.gzzdsg.happylife.domain.vo.msg.RecTextMsg;
 import com.gzzdsg.happylife.service.FoodService;
 import com.gzzdsg.happylife.util.XmlUtils;
-import com.gzzdsg.happylife.domain.vo.RecTextMsg;
 import jakarta.annotation.Resource;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.IOException;
@@ -30,7 +30,6 @@ class WechatBackendApplicationTests {
 
 	@Resource
 	private RedisTemplate<String, Object> redisTemplate;
-
 
 	@Test
 	void contextLoads() {
