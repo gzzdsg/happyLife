@@ -12,7 +12,9 @@ import java.util.Objects;
  */
 public enum MsgTypeEnum {
     TEXT("text", "文本类型"),
-    EVENT("event", "事件类型");
+    EVENT("event", "事件类型"),
+    LOCATION("location", "地理位置消息")
+    ;
 
     @Getter
     private String value;

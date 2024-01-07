@@ -1,11 +1,13 @@
 package com.gzzdsg.happylife.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.google.common.base.Throwables;
 import com.gzzdsg.happylife.constant.EventTypeEnum;
 import com.gzzdsg.happylife.constant.MsgTypeEnum;
-import com.gzzdsg.happylife.domain.RecEventMsg;
-import com.gzzdsg.happylife.domain.RecTextMsg;
+import com.gzzdsg.happylife.domain.vo.RecEventMsg;
+import com.gzzdsg.happylife.domain.vo.RecLocationMsg;
+import com.gzzdsg.happylife.domain.vo.RecTextMsg;
 import com.gzzdsg.happylife.domain.po.Food;
 import com.gzzdsg.happylife.mapper.FoodMapper;
 import com.gzzdsg.happylife.service.KeyService;
@@ -45,9 +47,12 @@ public class MsgServiceImpl implements MsgService {
     @Override
     public String receiveMsg(String message) {
         try {
+            // 解析xml消息
             JSONObject jsonObject = XmlUtils.parseXml(message);
+            // 解析消息类型
             MsgTypeEnum msgType = MsgTypeEnum.getByValue(jsonObject.getString("MsgType"));
             switch (msgType) {
+                // 如果是文本消息
                 case TEXT -> {
                     RecTextMsg recTextMsg = jsonObject.toJavaObject(RecTextMsg.class);
                     RecTextMsg replyTextMsg = new RecTextMsg();
@@ -60,11 +65,20 @@ public class MsgServiceImpl implements MsgService {
                     replyTextMsg.setContent(reply);
                     return XmlUtils.convertXml(replyTextMsg);
                 }
+                // 地理位置消息
+                case LOCATION -> {
+                    RecLocationMsg locationMsg = jsonObject.toJavaObject(RecLocationMsg.class);
+                    log.info("receiveMsg -> locationMsg : {}", JSON.toJSONString(locationMsg));
+                    return "success";
+                }
+                // 如果是事件消息
                 case EVENT -> {
                     RecEventMsg recEventMsg = jsonObject.toJavaObject(RecEventMsg.class);
                     EventTypeEnum eventTypeEnum = EventTypeEnum.getByValue(recEventMsg.getEvent());
                     switch (eventTypeEnum) {
+                        // 关注事件
                         case SUBSCRIBE -> {
+                            // 这里做了自动打招呼处理
                             RecTextMsg msg = RecTextMsg.getInstance(recEventMsg.getFromUserName(), recEventMsg.getToUserName(), REPLY_BY_SUBSCRIBE);
                             return XmlUtils.convertXml(msg);
                         }
