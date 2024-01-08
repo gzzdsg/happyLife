@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 微信官方对接接口
+ *
+ * @author damei
+ */
 @RestController
 public class TestController {
 
